@@ -92,7 +92,7 @@
                         <span id="usiaBadge" class="text-[11px] font-semibold text-slate-500">Kelompok: -</span>
                     </div>
                     <div class="relative">
-                        <input type="number" id="usia" name="usia" min="18" max="110" value="45" required inputmode="numeric"
+                        <input type="number" id="usia" name="usia" min="18" max="110" placeholder="Contoh: 45" required inputmode="numeric"
                             class="w-full pl-3 pr-16 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
                             oninput="hitungIMT()" onwheel="this.blur()">
                         <span class="absolute inset-y-1.5 right-1.5 px-2.5 flex items-center bg-slate-100/80 text-slate-400 text-xs font-semibold rounded pointer-events-none select-none tracking-wide">
@@ -108,7 +108,7 @@
                             Berat Badan <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <input type="number" step="0.5" id="berat_badan" name="berat_badan" min="25" max="250" value="65" required inputmode="decimal"
+                            <input type="number" step="0.5" id="berat_badan" name="berat_badan" min="25" max="250" placeholder="Contoh: 65" required inputmode="decimal"
                                 class="w-full pl-3 pr-14 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
                                 oninput="hitungIMT()" onwheel="this.blur()">
                             <span class="absolute inset-y-1.5 right-1.5 px-2.5 flex items-center bg-slate-100/80 text-slate-400 text-xs font-semibold rounded pointer-events-none select-none tracking-wide">
@@ -122,7 +122,7 @@
                             Tinggi Badan <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <input type="number" step="0.5" id="tinggi_badan" name="tinggi_badan" min="100" max="230" value="165" required inputmode="decimal"
+                            <input type="number" step="0.5" id="tinggi_badan" name="tinggi_badan" min="100" max="230" placeholder="Contoh: 165" required inputmode="decimal"
                                 class="w-full pl-3 pr-14 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
                                 oninput="hitungIMT()" onwheel="this.blur()">
                             <span class="absolute inset-y-1.5 right-1.5 px-2.5 flex items-center bg-slate-100/80 text-slate-400 text-xs font-semibold rounded pointer-events-none select-none tracking-wide">
@@ -139,13 +139,13 @@
                             Indeks Massa Tubuh (IMT / BMI)
                         </div>
                         <div class="flex items-baseline space-x-2 mt-0.5">
-                            <span id="bmiValue" class="text-xl font-extrabold text-slate-800">23.88</span>
+                            <span id="bmiValue" class="text-xl font-extrabold text-slate-800">-</span>
                             <span class="text-xs text-slate-500">kg/m&sup2;</span>
                         </div>
                     </div>
                     <div class="sm:text-right">
-                        <span id="bmiCategoryBadge" class="inline-block px-2.5 py-1 text-xs font-bold rounded-md bg-yellow-100 text-yellow-800 border border-yellow-200">
-                            Overweight (23 - 24.9)
+                        <span id="bmiCategoryBadge" class="inline-block px-2.5 py-1 text-xs font-bold rounded-md bg-slate-100 text-slate-500 border border-slate-200">
+                            Belum Dihitung
                         </span>
                     </div>
                 </div>
@@ -233,11 +233,11 @@
                     
                     <!-- Action Buttons -->
                     <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row gap-2.5">
-                        <a id="btnCetakRujukan" href="#" target="_blank"
-                            class="flex-1 min-h-[44px] bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-lg text-xs sm:text-sm text-center shadow-sm transition flex items-center justify-center space-x-1.5 active:scale-[0.99]">
-                            <i class="fa-solid fa-print"></i>
-                            <span>Cetak Surat Rujukan / Hasil</span>
-                        </a>
+                        <button type="button" id="btnCetakRujukan" onclick="unduhAtauCetakLaporan()"
+                            class="flex-1 min-h-[44px] bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-lg text-xs sm:text-sm text-center shadow-sm transition flex items-center justify-center space-x-1.5 active:scale-[0.99] cursor-pointer">
+                            <i class="fa-solid fa-file-pdf text-red-400"></i>
+                            <span>Cetak Surat Rujukan / Unduh PDF</span>
+                        </button>
                         <button type="button" onclick="window.location.reload()"
                             class="min-h-[44px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-lg text-xs sm:text-sm transition active:scale-[0.99]">
                             Skrining Ulang
@@ -270,6 +270,7 @@
     // State Penyimpanan Sesi Inferensi ONNX
     let ortSession = null;
     let savedPredictionId = null;
+    let lastScreeningData = null;
 
     // Nilai Skalasi Standar dari Notebook Penelitian (with_mean=False)
     const SCALERS = {
@@ -305,9 +306,13 @@
 
     // Fungsi Hitung IMT & Kategori
     function hitungIMT() {
-        const bb = parseFloat(document.getElementById('berat_badan').value) || 0;
-        const tb = parseFloat(document.getElementById('tinggi_badan').value) || 0;
-        const usia = parseInt(document.getElementById('usia').value) || 0;
+        const bbInput = document.getElementById('berat_badan').value.trim();
+        const tbInput = document.getElementById('tinggi_badan').value.trim();
+        const usiaInput = document.getElementById('usia').value.trim();
+
+        const usia = parseInt(usiaInput) || 0;
+        const bb = parseFloat(bbInput) || 0;
+        const tb = parseFloat(tbInput) || 0;
 
         // Label Kelompok Usia
         let ageGroup = '-';
@@ -317,14 +322,21 @@
         else if (usia > 60) ageGroup = 'Lansia (> 60 thn)';
         document.getElementById('usiaBadge').innerText = 'Kelompok: ' + ageGroup;
 
-        if (bb <= 0 || tb <= 0) return;
+        const bmiValEl = document.getElementById('bmiValue');
+        const badge = document.getElementById('bmiCategoryBadge');
+
+        if (!bbInput || !tbInput || bb <= 0 || tb <= 0) {
+            bmiValEl.innerText = '-';
+            badge.innerText = 'Belum Dihitung';
+            badge.className = 'inline-block px-2.5 py-1 text-xs font-bold rounded-md bg-slate-100 text-slate-500 border border-slate-200';
+            return;
+        }
 
         const tbMeter = tb / 100.0;
         const bmi = bb / (tbMeter * tbMeter);
-        document.getElementById('bmiValue').innerText = bmi.toFixed(2);
+        bmiValEl.innerText = bmi.toFixed(2);
 
         // Kategori BMI Standar Asia Pasifik (Sesuai Skripsi Bab III)
-        const badge = document.getElementById('bmiCategoryBadge');
         if (bmi < 18.5) {
             badge.innerText = 'Underweight (< 18.5)';
             badge.className = 'inline-block px-2.5 py-1 text-xs font-bold rounded-md bg-blue-100 text-blue-800 border border-blue-200';
@@ -338,7 +350,7 @@
             badge.innerText = 'Obesitas I (25 - 29.9)';
             badge.className = 'inline-block px-2.5 py-1 text-xs font-bold rounded-md bg-orange-100 text-orange-800 border border-orange-200';
         } else {
-            badge.innerText = 'Obesitas II (&ge; 30.0)';
+            badge.innerText = 'Obesitas II (≥ 30.0)';
             badge.className = 'inline-block px-2.5 py-1 text-xs font-bold rounded-md bg-red-100 text-red-800 border border-red-200';
         }
     }
@@ -348,15 +360,15 @@
         if (tipe === 'normo') {
             document.getElementById('nama_pengguna').value = 'Ahmad Fauzan';
             document.querySelector('input[name="jenis_kelamin"][value="L"]').checked = true;
-            document.getElementById('usia').value = 28;
-            document.getElementById('berat_badan').value = 62;
-            document.getElementById('tinggi_badan').value = 170;
+            document.getElementById('usia').value = 24;
+            document.getElementById('berat_badan').value = 60;
+            document.getElementById('tinggi_badan').value = 172;
         } else {
-            document.getElementById('nama_pengguna').value = 'Ny. Siti Aminah';
-            document.querySelector('input[name="jenis_kelamin"][value="P"]').checked = true;
-            document.getElementById('usia').value = 58;
-            document.getElementById('berat_badan').value = 78;
-            document.getElementById('tinggi_badan').value = 152;
+            document.getElementById('nama_pengguna').value = 'Tn. Bambang Sutrisno';
+            document.querySelector('input[name="jenis_kelamin"][value="L"]').checked = true;
+            document.getElementById('usia').value = 55;
+            document.getElementById('berat_badan').value = 90;
+            document.getElementById('tinggi_badan').value = 168;
         }
         hitungIMT();
     }
@@ -375,7 +387,7 @@
         const tb = parseFloat(document.getElementById('tinggi_badan').value);
 
         if (!usia || !bb || !tb) {
-            alert('Mohon lengkapi seluruh kolom formulir terlebih dahulu.');
+            alert('Mohon isi usia pasien, berat badan, dan tinggi badan terlebih dahulu.');
             return;
         }
 
@@ -474,6 +486,18 @@
             const isHighRisk = probHipertensi >= OPTIMAL_THRESHOLD;
             const statusString = isHighRisk ? 'RISIKO TINGGI' : 'NORMOTENSI';
 
+            // Simpan data skrining saat ini untuk keperluan cetak / download PDF
+            lastScreeningData = {
+                nama: nama,
+                usia: usia,
+                jk: jk,
+                bb: bb,
+                tb: tb,
+                bmi: bmi.toFixed(2),
+                status: statusString,
+                prob: persenProb
+            };
+
             // 3. Tampilkan Hasil pada Antarmuka (UI)
             tampilkanHasilUI({
                 isHighRisk,
@@ -571,7 +595,8 @@
 
     async function simpanHasilKeDatabase(payload) {
         try {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrfToken = csrfTokenMeta ? csrfTokenMeta.getAttribute('content') : '';
             const res = await fetch('{{ route("skrining.store") }}', {
                 method: 'POST',
                 headers: {
@@ -581,15 +606,43 @@
                 },
                 body: JSON.stringify(payload)
             });
-            const resData = await res.json();
-            if (resData.success && resData.id_prediction) {
-                savedPredictionId = resData.id_prediction;
-                const printBtn = document.getElementById('btnCetakRujukan');
-                printBtn.href = '/skrining/rujukan/' + savedPredictionId;
+            if (res.ok) {
+                const resData = await res.json();
+                if (resData.success && resData.id_prediction) {
+                    savedPredictionId = resData.id_prediction;
+                }
             }
         } catch (err) {
             console.warn('Gagal menyimpan riwayat ke server:', err);
         }
+    }
+
+    function unduhAtauCetakLaporan() {
+        if (!lastScreeningData) {
+            alert('Silakan lakukan analisis skrining terlebih dahulu.');
+            return;
+        }
+
+        const params = new URLSearchParams({
+            nama: lastScreeningData.nama,
+            usia: lastScreeningData.usia,
+            jk: lastScreeningData.jk,
+            bb: lastScreeningData.bb,
+            tb: lastScreeningData.tb,
+            bmi: lastScreeningData.bmi,
+            status: lastScreeningData.status,
+            prob: lastScreeningData.prob,
+            autoPrint: '1'
+        }).toString();
+
+        let targetUrl = '';
+        if (savedPredictionId) {
+            targetUrl = '/skrining/rujukan/' + savedPredictionId + '?' + params;
+        } else {
+            targetUrl = '/skrining/rujukan/preview?' + params;
+        }
+
+        window.open(targetUrl, '_blank');
     }
 
     function renderDebugList(obj) {

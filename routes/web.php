@@ -12,8 +12,8 @@ Route::get('/', [SkriningController::class, 'index'])->name('home');
 // Modul Skrining Mandiri & Inferensi ONNX Client-Side
 Route::get('/skrining', [SkriningController::class, 'index'])->name('skrining.index');
 Route::post('/skrining/simpan', [SkriningController::class, 'store'])->name('skrining.store');
-Route::get('/skrining/rujukan/{id}', [SkriningController::class, 'printRujukan'])->name('skrining.rujukan');
-Route::get('/skrining/cetak/{id}', [SkriningController::class, 'printRujukan'])->name('skrining.print');
+Route::get('/skrining/rujukan/{id?}', [SkriningController::class, 'printRujukan'])->name('skrining.rujukan');
+Route::get('/skrining/cetak/{id?}', [SkriningController::class, 'printRujukan'])->name('skrining.print');
 
 // Modul Internal Tenaga Medis / Dokter (Hanya Bisa Diakses Setelah Login)
 Route::middleware('auth')->group(function () {

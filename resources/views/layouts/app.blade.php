@@ -205,15 +205,16 @@
     </main>
 
     <!-- Academic & Clinical Footer -->
-    <footer class="bg-white border-t border-slate-200 py-4 text-xs text-slate-500 no-print mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-2">
-            <div class="flex items-center space-x-2">
-                <span class="font-bold text-slate-700">RSI Kendal &bull; Tugas Akhir</span>
-                <span>&ndash; Sistem Skrining Mandiri Hipertensi (CDSS Web)</span>
+    <footer class="bg-white border-t border-slate-200 py-4 sm:py-5 text-xs text-slate-500 no-print mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <div class="flex flex-col sm:flex-row items-center sm:items-baseline gap-1 sm:gap-2">
+                <span class="font-bold text-slate-800">RSI Kendal &bull; Tugas Akhir</span>
+                <span class="text-slate-600">Sistem Skrining Mandiri Hipertensi (CDSS Web)</span>
             </div>
-            <div class="text-slate-400">
-                Engine: <span class="font-semibold text-slate-600">ONNX Runtime Web (WASM)</span> &bull; 
-                Model: <span class="font-semibold text-slate-600">ExtraTrees Classifier v1.2</span>
+            <div class="flex flex-wrap items-center justify-center sm:justify-end gap-x-3 gap-y-1 text-slate-400 text-[11px] sm:text-xs">
+                <span>Engine: <strong class="text-slate-600 font-semibold">ONNX Runtime Web</strong></span>
+                <span class="hidden sm:inline">&bull;</span>
+                <span>Model: <strong class="text-slate-600 font-semibold">ExtraTrees v1.2</strong></span>
             </div>
         </div>
     </footer>
