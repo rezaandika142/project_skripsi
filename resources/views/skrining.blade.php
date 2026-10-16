@@ -93,9 +93,9 @@
                     </div>
                     <div class="relative">
                         <input type="number" id="usia" name="usia" min="18" max="110" value="45" required inputmode="numeric"
-                            class="w-full px-3 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
-                            oninput="hitungIMT()">
-                        <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-slate-400 font-semibold pointer-events-none">
+                            class="w-full pl-3 pr-16 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
+                            oninput="hitungIMT()" onwheel="this.blur()">
+                        <span class="absolute inset-y-1.5 right-1.5 px-2.5 flex items-center bg-slate-100/80 text-slate-400 text-xs font-semibold rounded pointer-events-none select-none tracking-wide">
                             Tahun
                         </span>
                     </div>
@@ -109,9 +109,9 @@
                         </label>
                         <div class="relative">
                             <input type="number" step="0.5" id="berat_badan" name="berat_badan" min="25" max="250" value="65" required inputmode="decimal"
-                                class="w-full px-3 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
-                                oninput="hitungIMT()">
-                            <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-slate-400 font-semibold pointer-events-none">
+                                class="w-full pl-3 pr-14 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
+                                oninput="hitungIMT()" onwheel="this.blur()">
+                            <span class="absolute inset-y-1.5 right-1.5 px-2.5 flex items-center bg-slate-100/80 text-slate-400 text-xs font-semibold rounded pointer-events-none select-none tracking-wide">
                                 kg
                             </span>
                         </div>
@@ -123,9 +123,9 @@
                         </label>
                         <div class="relative">
                             <input type="number" step="0.5" id="tinggi_badan" name="tinggi_badan" min="100" max="230" value="165" required inputmode="decimal"
-                                class="w-full px-3 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
-                                oninput="hitungIMT()">
-                            <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-slate-400 font-semibold pointer-events-none">
+                                class="w-full pl-3 pr-14 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
+                                oninput="hitungIMT()" onwheel="this.blur()">
+                            <span class="absolute inset-y-1.5 right-1.5 px-2.5 flex items-center bg-slate-100/80 text-slate-400 text-xs font-semibold rounded pointer-events-none select-none tracking-wide">
                                 cm
                             </span>
                         </div>

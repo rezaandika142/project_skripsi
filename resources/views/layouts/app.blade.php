@@ -45,6 +45,16 @@
         @media print {
             .no-print { display: none !important; }
         }
+        /* Hilangkan panah spinner / scroll bawaan browser pada input angka */
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
     </style>
     @stack('styles')
 </head>
@@ -220,6 +230,13 @@
                 icon.className = 'fa-solid fa-bars text-lg';
             }
         }
+
+        // Mencegah perubahan angka saat mouse wheel digeser pada input number
+        document.addEventListener('wheel', function(e) {
+            if (document.activeElement && document.activeElement.type === 'number') {
+                document.activeElement.blur();
+            }
+        }, { passive: true });
     </script>
     @stack('scripts')
 </body>
