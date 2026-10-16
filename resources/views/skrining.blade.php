@@ -31,20 +31,12 @@
         
         <!-- Kolom Kiri: Formulir Input (5 Parameter Fisik) -->
         <div class="lg:col-span-6 bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6 space-y-5">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div class="border-b border-slate-100 pb-3">
                 <h2 class="font-bold text-sm sm:text-base text-slate-800 flex items-center">
                     <i class="fa-solid fa-clipboard-user text-sky-600 mr-2"></i>
                     Parameter Fisik Pasien
                 </h2>
-                <!-- Preset Demo Pasien -->
-                <div class="flex items-center space-x-2">
-                    <button type="button" onclick="loadPreset('normo')" class="min-h-[38px] text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3 py-1.5 rounded-lg transition active:scale-95" title="Isi otomatis data contoh pasien normal">
-                        Contoh A (Normal)
-                    </button>
-                    <button type="button" onclick="loadPreset('ht')" class="min-h-[38px] text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-semibold px-3 py-1.5 rounded-lg border border-amber-200 transition active:scale-95" title="Isi otomatis data contoh pasien berisiko">
-                        Contoh B (Risiko)
-                    </button>
-                </div>
+                <p class="text-xs text-slate-500 mt-0.5">Masukkan data fisik pasien secara mandiri untuk dianalisis oleh sistem.</p>
             </div>
 
             <form id="formSkrining" class="space-y-4" onsubmit="event.preventDefault(); jalankanSkrining();">
@@ -353,24 +345,6 @@
             badge.innerText = 'Obesitas II (≥ 30.0)';
             badge.className = 'inline-block px-2.5 py-1 text-xs font-bold rounded-md bg-red-100 text-red-800 border border-red-200';
         }
-    }
-
-    // Fungsi Pengisian Data Contoh (Demo Sidang)
-    function loadPreset(tipe) {
-        if (tipe === 'normo') {
-            document.getElementById('nama_pengguna').value = 'Ahmad Fauzan';
-            document.querySelector('input[name="jenis_kelamin"][value="L"]').checked = true;
-            document.getElementById('usia').value = 24;
-            document.getElementById('berat_badan').value = 60;
-            document.getElementById('tinggi_badan').value = 172;
-        } else {
-            document.getElementById('nama_pengguna').value = 'Tn. Bambang Sutrisno';
-            document.querySelector('input[name="jenis_kelamin"][value="L"]').checked = true;
-            document.getElementById('usia').value = 55;
-            document.getElementById('berat_badan').value = 90;
-            document.getElementById('tinggi_badan').value = 168;
-        }
-        hitungIMT();
     }
 
     // Eksekusi Inferensi Model ONNX
