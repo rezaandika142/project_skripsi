@@ -5,43 +5,43 @@
 @section('content')
 <div class="space-y-6">
     <!-- Header Banner -->
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <div class="flex items-center space-x-2 text-sky-600 font-semibold text-xs tracking-wider uppercase mb-1">
                 <i class="fa-solid fa-notes-medical"></i>
                 <span>Pemeriksaan Mandiri Berbasis Machine Learning</span>
             </div>
-            <h1 class="text-2xl font-black text-slate-800 tracking-tight">Skrining Deteksi Dini Risiko Hipertensi</h1>
-            <p class="text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
+            <h1 class="text-xl sm:text-2xl font-black text-slate-800 tracking-tight">Skrining Deteksi Dini Risiko Hipertensi</h1>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
                 Evaluasi faktor risiko fisik secara mandiri menggunakan model <strong>ExtraTrees Classifier</strong> yang dioptimalkan dengan ambang batas (threshold) <strong>81.5%</strong>.
             </p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
-            <span class="text-xs bg-slate-100 text-slate-700 font-medium px-3 py-1.5 rounded-lg border border-slate-300">
+            <span class="text-xs bg-slate-100 text-slate-700 font-medium px-2.5 py-1.5 rounded-lg border border-slate-300">
                 <i class="fa-solid fa-microchip text-sky-600 mr-1.5"></i>Model: {{ $activeModel->versi_model }}
             </span>
-            <span class="text-xs bg-emerald-50 text-emerald-700 font-semibold px-3 py-1.5 rounded-lg border border-emerald-200">
+            <span class="text-xs bg-emerald-50 text-emerald-700 font-semibold px-2.5 py-1.5 rounded-lg border border-emerald-200">
                 <i class="fa-solid fa-bullseye text-emerald-600 mr-1.5"></i>Akurasi: {{ number_format($activeModel->akurasi, 2) }}%
             </span>
         </div>
     </div>
 
     <!-- Main Grid: Form (Left) & Realtime CDSS Result (Right) -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
         
         <!-- Kolom Kiri: Formulir Input (5 Parameter Fisik) -->
-        <div class="lg:col-span-6 bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-5">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h2 class="font-bold text-base text-slate-800 flex items-center">
+        <div class="lg:col-span-6 bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6 space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                <h2 class="font-bold text-sm sm:text-base text-slate-800 flex items-center">
                     <i class="fa-solid fa-clipboard-user text-sky-600 mr-2"></i>
                     Parameter Fisik Pasien
                 </h2>
                 <!-- Preset Demo Pasien -->
                 <div class="flex items-center space-x-2">
-                    <button type="button" onclick="loadPreset('normo')" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-2.5 py-1 rounded transition" title="Isi otomatis data contoh pasien normal">
+                    <button type="button" onclick="loadPreset('normo')" class="min-h-[38px] text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3 py-1.5 rounded-lg transition active:scale-95" title="Isi otomatis data contoh pasien normal">
                         Contoh A (Normal)
                     </button>
-                    <button type="button" onclick="loadPreset('ht')" class="text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-medium px-2.5 py-1 rounded border border-amber-200 transition" title="Isi otomatis data contoh pasien berisiko">
+                    <button type="button" onclick="loadPreset('ht')" class="min-h-[38px] text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 font-semibold px-3 py-1.5 rounded-lg border border-amber-200 transition active:scale-95" title="Isi otomatis data contoh pasien berisiko">
                         Contoh B (Risiko)
                     </button>
                 </div>
@@ -54,11 +54,11 @@
                         Nama Pasien <span class="text-slate-400 font-normal lowercase">(opsional / anonim)</span>
                     </label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 pointer-events-none">
                             <i class="fa-regular fa-user text-sm"></i>
                         </span>
                         <input type="text" id="nama_pengguna" name="nama_pengguna" placeholder="Contoh: Budi Santoso"
-                            class="w-full pl-9 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition">
+                            class="w-full pl-9 pr-3 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white">
                     </div>
                 </div>
 
@@ -68,15 +68,15 @@
                         Jenis Kelamin <span class="text-red-500">*</span>
                     </label>
                     <div class="grid grid-cols-2 gap-3">
-                        <label class="relative flex items-center justify-center p-3 border border-slate-300 rounded-lg cursor-pointer hover:border-sky-500 transition has-[:checked]:border-sky-600 has-[:checked]:bg-sky-50/50 has-[:checked]:text-sky-900">
-                            <input type="radio" name="jenis_kelamin" value="L" checked class="accent-sky-600 mr-2" onchange="hitungIMT()">
-                            <span class="text-sm font-semibold flex items-center">
+                        <label class="relative flex items-center justify-center p-3.5 min-h-[48px] border border-slate-300 rounded-lg cursor-pointer hover:border-sky-500 transition active:scale-[0.98] has-[:checked]:border-sky-600 has-[:checked]:bg-sky-50/60 has-[:checked]:text-sky-900">
+                            <input type="radio" name="jenis_kelamin" value="L" checked class="accent-sky-600 mr-2 w-4 h-4" onchange="hitungIMT()">
+                            <span class="text-sm font-semibold flex items-center select-none">
                                 <i class="fa-solid fa-mars text-blue-600 mr-1.5"></i> Laki-laki
                             </span>
                         </label>
-                        <label class="relative flex items-center justify-center p-3 border border-slate-300 rounded-lg cursor-pointer hover:border-sky-500 transition has-[:checked]:border-sky-600 has-[:checked]:bg-sky-50/50 has-[:checked]:text-sky-900">
-                            <input type="radio" name="jenis_kelamin" value="P" class="accent-sky-600 mr-2" onchange="hitungIMT()">
-                            <span class="text-sm font-semibold flex items-center">
+                        <label class="relative flex items-center justify-center p-3.5 min-h-[48px] border border-slate-300 rounded-lg cursor-pointer hover:border-sky-500 transition active:scale-[0.98] has-[:checked]:border-sky-600 has-[:checked]:bg-sky-50/60 has-[:checked]:text-sky-900">
+                            <input type="radio" name="jenis_kelamin" value="P" class="accent-sky-600 mr-2 w-4 h-4" onchange="hitungIMT()">
+                            <span class="text-sm font-semibold flex items-center select-none">
                                 <i class="fa-solid fa-venus text-pink-600 mr-1.5"></i> Perempuan
                             </span>
                         </label>
@@ -92,8 +92,8 @@
                         <span id="usiaBadge" class="text-[11px] font-semibold text-slate-500">Kelompok: -</span>
                     </div>
                     <div class="relative">
-                        <input type="number" id="usia" name="usia" min="18" max="110" value="45" required
-                            class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"
+                        <input type="number" id="usia" name="usia" min="18" max="110" value="45" required inputmode="numeric"
+                            class="w-full px-3 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
                             oninput="hitungIMT()">
                         <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-slate-400 font-semibold pointer-events-none">
                             Tahun
@@ -108,8 +108,8 @@
                             Berat Badan <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <input type="number" step="0.5" id="berat_badan" name="berat_badan" min="25" max="250" value="65" required
-                                class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"
+                            <input type="number" step="0.5" id="berat_badan" name="berat_badan" min="25" max="250" value="65" required inputmode="decimal"
+                                class="w-full px-3 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
                                 oninput="hitungIMT()">
                             <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-slate-400 font-semibold pointer-events-none">
                                 kg
@@ -122,8 +122,8 @@
                             Tinggi Badan <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <input type="number" step="0.5" id="tinggi_badan" name="tinggi_badan" min="100" max="230" value="165" required
-                                class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition"
+                            <input type="number" step="0.5" id="tinggi_badan" name="tinggi_badan" min="100" max="230" value="165" required inputmode="decimal"
+                                class="w-full px-3 py-2.5 text-base sm:text-sm min-h-[44px] border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition bg-white"
                                 oninput="hitungIMT()">
                             <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-xs text-slate-400 font-semibold pointer-events-none">
                                 cm
@@ -133,7 +133,7 @@
                 </div>
 
                 <!-- Kalkulasi Otomatis IMT / BMI (Live Readonly Box) -->
-                <div class="bg-slate-50 border border-slate-200 rounded-lg p-3.5 flex items-center justify-between">
+                <div class="bg-slate-50 border border-slate-200 rounded-lg p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                         <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                             Indeks Massa Tubuh (IMT / BMI)
@@ -143,7 +143,7 @@
                             <span class="text-xs text-slate-500">kg/m&sup2;</span>
                         </div>
                     </div>
-                    <div class="text-right">
+                    <div class="sm:text-right">
                         <span id="bmiCategoryBadge" class="inline-block px-2.5 py-1 text-xs font-bold rounded-md bg-yellow-100 text-yellow-800 border border-yellow-200">
                             Overweight (23 - 24.9)
                         </span>
@@ -153,11 +153,11 @@
                 <!-- Tombol Submit Analisis -->
                 <div class="pt-2">
                     <button type="submit" id="btnAnalisis"
-                        class="w-full bg-[#0284c7] hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-lg shadow-sm hover:shadow transition flex items-center justify-center space-x-2">
+                        class="w-full min-h-[48px] bg-[#0284c7] hover:bg-sky-600 active:scale-[0.99] text-white font-bold py-3.5 px-4 rounded-lg shadow-sm hover:shadow transition flex items-center justify-center space-x-2 text-sm sm:text-base">
                         <i class="fa-solid fa-heart-pulse text-base" id="btnIcon"></i>
                         <span id="btnText">Analisis Risiko Hipertensi</span>
                     </button>
-                    <p class="text-[11px] text-slate-500 text-center mt-2">
+                    <p class="text-[11px] text-slate-500 text-center mt-2 leading-relaxed">
                         Eksekusi inferensi berjalan secara langsung di browser melalui WebAssembly (WASM).
                     </p>
                 </div>
@@ -232,14 +232,14 @@
                     </div>
                     
                     <!-- Action Buttons -->
-                    <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row gap-2">
+                    <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row gap-2.5">
                         <a id="btnCetakRujukan" href="#" target="_blank"
-                            class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 px-4 rounded-lg text-xs text-center shadow-sm transition flex items-center justify-center space-x-1.5">
+                            class="flex-1 min-h-[44px] bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-lg text-xs sm:text-sm text-center shadow-sm transition flex items-center justify-center space-x-1.5 active:scale-[0.99]">
                             <i class="fa-solid fa-print"></i>
                             <span>Cetak Surat Rujukan / Hasil</span>
                         </a>
                         <button type="button" onclick="window.location.reload()"
-                            class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2.5 px-4 rounded-lg text-xs transition">
+                            class="min-h-[44px] bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-4 rounded-lg text-xs sm:text-sm transition active:scale-[0.99]">
                             Skrining Ulang
                         </button>
                     </div>
@@ -248,11 +248,11 @@
                 <!-- Penjelasan 18 Variabel yang Dihitung Secara Otomatis -->
                 <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
                     <details class="text-xs text-slate-600 cursor-pointer">
-                        <summary class="font-bold text-slate-700 hover:text-sky-600 select-none">
+                        <summary class="font-bold text-slate-700 hover:text-sky-600 select-none py-1">
                             <i class="fa-solid fa-circle-info mr-1.5 text-sky-500"></i>
                             Rincian 18 Fitur Model (Calculated Behind the Scenes)
                         </summary>
-                        <div class="mt-3 pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-[11px] font-mono" id="featureDebugList">
+                        <div class="mt-3 pt-3 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] font-mono" id="featureDebugList">
                             <!-- Diisi via JS -->
                         </div>
                     </details>

@@ -65,8 +65,8 @@
                     </span>
                 </div>
 
-                <!-- Main Menu Links -->
-                <nav class="flex items-center space-x-1 sm:space-x-3 text-sm font-semibold">
+                <!-- Desktop Main Menu Links (Hidden on Mobile) -->
+                <nav class="hidden md:flex items-center space-x-1 sm:space-x-3 text-sm font-semibold">
                     <!-- Menu Publik: Skrining Mandiri (Selalu Tampil) -->
                     <a href="{{ route('skrining.index') }}" class="px-3 py-2 rounded-md transition {{ request()->routeIs('skrining.*') ? 'bg-sky-500/20 text-sky-400 border border-sky-500/40' : 'text-slate-300 hover:text-white hover:bg-slate-800' }}">
                         <i class="fa-solid fa-stethoscope mr-1.5"></i>Skrining Mandiri
@@ -82,7 +82,7 @@
                         </a>
                     @endauth
 
-                    <!-- Auth State -->
+                    <!-- Auth State Desktop -->
                     <div class="pl-2 border-l border-slate-700 flex items-center">
                         @auth
                             <div class="flex items-center space-x-2">
@@ -92,18 +92,65 @@
                                 </span>
                                 <form action="{{ route('logout') }}" method="POST" class="inline">
                                     @csrf
-                                    <button type="submit" title="Keluar dari sesi dokter" class="text-xs text-slate-400 hover:text-red-400 px-2 py-1.5 transition">
+                                    <button type="submit" title="Keluar dari sesi dokter" class="text-xs text-slate-400 hover:text-red-400 p-2 transition">
                                         <i class="fa-solid fa-right-from-bracket"></i>
                                     </button>
                                 </form>
                             </div>
                         @else
-                            <a href="{{ route('login') }}" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-medium px-3 py-1.5 rounded-md border border-slate-700 shadow-sm transition flex items-center">
+                            <a href="{{ route('login') }}" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-medium px-3 py-2 rounded-md border border-slate-700 shadow-sm transition flex items-center">
                                 <i class="fa-solid fa-lock mr-1.5 text-sky-400"></i>Portal Petugas
                             </a>
                         @endauth
                     </div>
                 </nav>
+
+                <!-- Mobile Hamburger Button (Visible on Mobile Only) -->
+                <div class="flex md:hidden items-center space-x-2">
+                    @auth
+                        <span class="text-[11px] bg-slate-800 text-sky-400 px-2 py-1 rounded border border-slate-700 truncate max-w-[100px]">
+                            {{ Auth::user()->name }}
+                        </span>
+                    @endauth
+                    <button type="button" id="mobileMenuBtn" onclick="toggleMobileMenu()" class="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition" aria-label="Buka Menu Navigasi">
+                        <i class="fa-solid fa-bars text-lg" id="mobileMenuIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Drawer Menu (Collapsible) -->
+            <div id="mobileMenu" class="hidden md:hidden border-t border-slate-800 py-3 space-y-2 pb-4">
+                <a href="{{ route('skrining.index') }}" class="flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold transition {{ request()->routeIs('skrining.*') ? 'bg-sky-500/20 text-sky-400 border border-sky-500/40' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                    <i class="fa-solid fa-stethoscope w-6 text-sky-400"></i>
+                    <span>Skrining Mandiri</span>
+                </a>
+
+                @auth
+                    <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold transition {{ request()->routeIs('dashboard') ? 'bg-sky-500/20 text-sky-400 border border-sky-500/40' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fa-solid fa-chart-line w-6 text-emerald-400"></i>
+                        <span>Dasbor Monitoring</span>
+                    </a>
+                    <a href="{{ route('riwayat.index') }}" class="flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold transition {{ request()->routeIs('riwayat.*') ? 'bg-sky-500/20 text-sky-400 border border-sky-500/40' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <i class="fa-solid fa-clock-rotate-left w-6 text-amber-400"></i>
+                        <span>Riwayat & Audit Log</span>
+                    </a>
+                    <div class="pt-2 border-t border-slate-800 flex items-center justify-between px-3">
+                        <div class="text-xs text-slate-400">
+                            Masuk sebagai: <strong class="text-slate-200 block">{{ Auth::user()->name }}</strong>
+                        </div>
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="text-xs bg-red-950/60 hover:bg-red-900 text-red-300 border border-red-800/60 px-3 py-1.5 rounded-md font-semibold transition flex items-center space-x-1">
+                                <i class="fa-solid fa-right-from-bracket mr-1"></i>Keluar
+                            </button>
+                        </form>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="flex items-center px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-lock w-6 text-sky-400"></i>
+                        <span>Portal Petugas / Dokter</span>
+                    </a>
+                @endauth
             </div>
         </div>
     </header>
@@ -161,6 +208,19 @@
         </div>
     </footer>
 
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.className = 'fa-solid fa-xmark text-lg';
+            } else {
+                menu.classList.add('hidden');
+                icon.className = 'fa-solid fa-bars text-lg';
+            }
+        }
+    </script>
     @stack('scripts')
 </body>
 </html>

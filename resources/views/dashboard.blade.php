@@ -6,23 +6,23 @@
 <div class="space-y-6">
 
     <!-- Top Welcome & System Status Banner -->
-    <div class="bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a] rounded-xl shadow-md p-6 text-white border border-slate-700/60 flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a] rounded-xl shadow-md p-4 sm:p-6 text-white border border-slate-700/60 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <div class="flex items-center space-x-2 text-sky-400 font-bold text-xs uppercase tracking-widest mb-1.5">
                 <i class="fa-solid fa-hospital-user"></i>
                 <span>Sistem Monitoring Skrining Mandiri &bull; RSI Kendal</span>
             </div>
-            <h1 class="text-2xl font-black tracking-tight">Dasbor Pemantauan Risiko Hipertensi</h1>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight">Dasbor Pemantauan Risiko Hipertensi</h1>
             <p class="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
                 Pemantauan data skrining masyarakat dan evaluasi klinis secara terpusat menggunakan model <em>ExtraTrees Classifier</em> berkinerja tinggi.
             </p>
         </div>
-        <div class="flex items-center space-x-3">
-            <a href="{{ route('skrining.index') }}" class="bg-sky-500 hover:bg-sky-400 text-white font-bold px-4 py-2.5 rounded-lg text-xs shadow-sm transition flex items-center space-x-2">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full md:w-auto">
+            <a href="{{ route('skrining.index') }}" class="min-h-[44px] bg-sky-500 hover:bg-sky-400 text-white font-bold px-4 py-2.5 rounded-lg text-xs shadow-sm transition flex items-center justify-center space-x-2 active:scale-95">
                 <i class="fa-solid fa-plus-circle"></i>
                 <span>Skrining Pasien Baru</span>
             </a>
-            <a href="{{ route('riwayat.export') }}" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-4 py-2.5 rounded-lg text-xs border border-slate-600 transition flex items-center space-x-2">
+            <a href="{{ route('riwayat.export') }}" class="min-h-[44px] bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-4 py-2.5 rounded-lg text-xs border border-slate-600 transition flex items-center justify-center space-x-2 active:scale-95">
                 <i class="fa-solid fa-file-csv"></i>
                 <span>Ekspor CSV</span>
             </a>
@@ -199,7 +199,62 @@
             </a>
         </div>
 
-        <div class="overflow-x-auto">
+        <!-- Mobile View (Cards - Tampil di Layar Kecil < md) -->
+        <div class="block md:hidden space-y-3">
+            @forelse($recentPredictions as $item)
+                <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200/80 space-y-2.5">
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <div class="font-bold text-sm text-slate-900">{{ $item->nama_pengguna }}</div>
+                            <div class="text-[11px] text-slate-500 font-mono mt-0.5">
+                                {{ \Carbon\Carbon::parse($item->tanggal_prediksi)->format('d/m/Y H:i') }} &bull; {{ $item->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}, {{ $item->usia }} thn
+                            </div>
+                        </div>
+                        <div>
+                            @if($item->status_hipertensi == 'RISIKO TINGGI')
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-800 border border-red-200">
+                                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> Risiko Tinggi
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                    <i class="fa-solid fa-circle-check mr-1"></i> Normotensi
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 bg-white rounded-lg p-2 border border-slate-200 text-center text-xs">
+                        <div>
+                            <span class="text-[10px] text-slate-400 block uppercase">BB / TB</span>
+                            <span class="font-bold text-slate-700">{{ $item->berat_badan }}k / {{ $item->tinggi_badan }}c</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 block uppercase">IMT</span>
+                            <span class="font-bold text-slate-800">{{ $item->bmi }}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 block uppercase">Prob</span>
+                            <span class="font-black text-slate-900">{{ $item->probabilitas }}%</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-1">
+                        <a href="{{ route('skrining.rujukan', $item->id_prediction) }}" target="_blank"
+                            class="min-h-[40px] w-full bg-white hover:bg-sky-50 text-sky-700 hover:text-sky-800 font-bold px-3 py-2 rounded-lg text-xs border border-slate-300 hover:border-sky-300 transition flex items-center justify-center space-x-1.5 active:scale-[0.99]">
+                            <i class="fa-solid fa-print"></i>
+                            <span>Cetak Surat Rujukan</span>
+                        </a>
+                    </div>
+                </div>
+            @empty
+                <div class="text-center py-6 text-slate-400 text-xs">
+                    Belum ada catatan skrining yang tersimpan.
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Desktop View (Tabel - Tampil di Layar Sedang & Lebar >= md) -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="w-full text-left text-xs text-slate-600">
                 <thead class="bg-slate-50 text-slate-700 uppercase tracking-wider font-bold border-b border-slate-200">
                     <tr>
