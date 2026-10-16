@@ -1,0 +1,19 @@
+{
+  "feature_set": "OLD_ENGINEERED_NO_GDS",
+  "features": [
+    "JENIS_KELAMIN",
+    "USIA",
+    "BB",
+    "TB",
+    "BMI",
+    "AGE_GROUP",
+    "BMI_CAT",
+    "WT_HT_RATIO",
+    "BSA",
+    "RISK_SCORE_NO_CURRENT_BP"
+  ],
+  "n_features_transformed": 18,
+  "model_name": "ET_n400_mfsqrt_leaf1_depthNone_cwmanual",
+  "threshold": 0.815,
+  "accuracy": 0.8520900321543409
+}
